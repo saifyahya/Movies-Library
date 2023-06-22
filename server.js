@@ -12,6 +12,7 @@ const movieData= require("./Movie Data/data.json")    //making object of the dat
 app.listen(3000,()=>{console.log("server is running on port 3000")})        //server is listening for a requests
 
 
+
 const axios=require("axios")                        
 require("dotenv").config();
 
@@ -108,6 +109,19 @@ app.get('/',(req,res)=>{                         //home page route handler with 
   let m1= new Movie(movieData.title, movieData.poster_path, movieData.overview)
   res.send(m1);
 })          
+
+    function Movie(title, poster_path, overview) {  //constructor to format data
+      this.title = title;
+      this.poster_path = poster_path;
+      this.overview = overview;
+    }
+
+app.get('/',(req,res)=>{                         //home page route handler with handler
+    console.log("home page"+req.originalUrl);
+    let m1= new Movie(movieData.title, movieData.poster_path, movieData.overview)
+    res.send(m1);
+})         
+ 
 
 app.get('/favorite',(req,res) =>{           //favorite page route with handler
     console.log("favorite page")
