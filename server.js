@@ -40,7 +40,7 @@ async function serachHandler(req,res) {
     let movieName = req.query.name;
     let myarr=[]
    for (let i =0;i<mdbData.length;i++){
-    if(mdbData[i].id, mdbData[i].title == movieName || mdbData[i].name == movieName){
+    if( mdbData[i].title == movieName || mdbData[i].name == movieName){
     let x = new Mdbformatt(mdbData[i].id, mdbData[i].title || mdbData[i].name, mdbData[i].release_date || mdbData[i].first_air_date, mdbData[i].poster_path, mdbData[i].overview,)
     myarr.push(x)}
   }
