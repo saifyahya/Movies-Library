@@ -37,10 +37,12 @@ app.get('/search',serachHandler)              //get request using axios "/search
 async function serachHandler(req,res) {   
     let axiosres= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.PK}&language=en-US&query=The&page=2`)
     let mdbData=axiosres.data.results;
+    let movieName = req.query.name;
     let myarr=[]
    for (let i =0;i<mdbData.length;i++){
+    if(mdbData[i].id, mdbData[i].title == movieName || mdbData[i].name == movieName){
     let x = new Mdbformatt(mdbData[i].id, mdbData[i].title || mdbData[i].name, mdbData[i].release_date || mdbData[i].first_air_date, mdbData[i].poster_path, mdbData[i].overview,)
-    myarr.push(x)
+    myarr.push(x)}
   }
   res.send(myarr)
    }
