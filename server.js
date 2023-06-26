@@ -134,12 +134,6 @@ app.get('/favorite',(req,res) =>{           //favorite page route with handler
       next()
     })
 
-  app.use((err, req, res, next) => {
-    res.status(500).send({
-      code: 500,
-      message: "Server Error"
-    })
-  })
 
 
 
