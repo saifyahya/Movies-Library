@@ -8,7 +8,6 @@ app.use(cors())                        //middleware to determine who can touch t
 
 const movieData= require("./Movie Data/data.json")    //making object of the data in this path
 
-      //server is listening for a requests
 
 const axios=require("axios")         //require axios library to make API requests               
 require("dotenv").config();           //require .env library to use .env file
@@ -22,14 +21,11 @@ client.connect().then( () => {app.listen(3000,()=>{console.log("server is runnin
 })  //to make sure not started the server untill db is connected
 
 app.post('/addMovie', (req,res) => {
-let title =req.body
-let release_date =req.body
-let poster_path =req.body
-let overview=req.body
-
-
-
-  let data =` insert into saifdb(title,release_date,poster_path,overview) values ($1,$2,$3,$4,$5)`
+let title =req.body.title
+let release_date =req.body.release_date
+let poster_path =req.body.poster_path
+let overview=req.body.overview
+  let data =` insert into movies(title,release_date,poster_path,overview) values($1,$2,$3,$4)`
   client.query(data,[title,release_date,poster_path,overview]).then (() => {
     res.status(201).send("movie added to database")
   })
