@@ -25,48 +25,63 @@ app.get('/trending',handleTrending)             //get request using axios "/tren
 async function handleTrending(req,res) {                    
     let axiosres= await axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.PK}&language=en-US`)
     let mdbData=axiosres.data.results
-    let myarr=[]
-    for (let i = 0; i < mdbData.length; i++) {
-     let x = new Mdbformatt(mdbData[i].id, mdbData[i].title || mdbData[i].name, mdbData[i].release_date || mdbData[i].first_air_date, mdbData[i].poster_path, mdbData[i].overview,)
-      myarr.push(x)
-    }
-    res.send(myarr)
+    let x= mdbData.map(element => {
+      return {
+    id: element.id,
+    title:element.title || element.name,
+    release_date:element.release_date,
+    poster_path: element.poster_path,
+    overview: element.overview
+      }
+    })
+res.send(x)
   }
 
 app.get('/search',serachHandler)              //get request using axios "/search"
 async function serachHandler(req,res) {   
-    let axiosres= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.PK}&language=en-US&query=The&page=2`)
+    let movieName = "The";
+    let axiosres= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.PK}&language=en-US&query=${movieName}&page=2`)
     let mdbData=axiosres.data.results;
-    let movieName = req.query.name;
-    let myarr=[];
-   for (let i =0;i<mdbData.length;i++){
-    if(mdbData[i].title == movieName|| mdbData[i].name== movieName){
-    let x = new Mdbformatt(mdbData[i].id, mdbData[i].title || mdbData[i].name, mdbData[i].release_date || mdbData[i].first_air_date, mdbData[i].poster_path, mdbData[i].overview,)
-    myarr.push(x)}
-  }
-  res.send(myarr)
+  
+  res.send({
+   id: mdbData.id,
+    title:mdbData.title,
+    release_date:mdbData.release_date,
+    poster_path: mdbData.poster_path,
+    overview: mdbData.overview
+  })
    }
  
 app.get('/popular',popularHandler)            //get request using axios "/popular"
 async function popularHandler(req,res) {                    
     let axiosres= await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.PK}&language=en-US&page=1`)
     let mdbData=axiosres.data.results;
-    let myarr=[]
-   for (let i =0;i<mdbData.length;i++){
-    let x = new Mdbformatt(mdbData[i].id, mdbData[i].title || mdbData[i].name, mdbData[i].release_date || mdbData[i].first_air_date, mdbData[i].poster_path, mdbData[i].overview,)
-    myarr.push(x)}
-res.send(myarr)
+   let x= mdbData.map(element => {
+      return {
+    id: element.id,
+    title:element.title || element.name,
+    release_date:element.release_date,
+    poster_path: element.poster_path,
+    overview: element.overview
+      }
+    })
+res.send(x)
 }
 
 app.get('/toprated',topratedHandler)        //get request using axios "/toprated"
 async function topratedHandler(req,res) {                    
     let axiosres= await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.PK}&language=en-US&page=1`)
     let mdbData=axiosres.data.results;
-    let myarr=[];
-   for (let i =0;i<mdbData.length;i++){
-    let x = new Mdbformatt(mdbData[i].id, mdbData[i].title || mdbData[i].name, mdbData[i].release_date || mdbData[i].first_air_date, mdbData[i].poster_path, mdbData[i].overview,)
-    myarr.push(x)}
-    res.send(myarr)
+    let x= mdbData.map(element => {
+      return {
+    id: element.id,
+    title:element.title || element.name,
+    release_date:element.release_date,
+    poster_path: element.poster_path,
+    overview: element.overview
+      }
+    })
+res.send(x)
 }
 
 app.get('/',(req,res)=>{                         //home page route handler with handler, get request from data.json
