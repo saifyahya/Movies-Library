@@ -7,10 +7,38 @@ app.use(cors())                        //middleware to determine who can touch t
 
 const movieData= require("./Movie Data/data.json")    //making object of the data in this path
 
-app.listen(3000,()=>{console.log("server is running on port 3000")})        //server is listening for a requests
 
 const axios=require("axios")         //require axios library to make API requests               
 require("dotenv").config();           //require .env library to use .env file
+
+/* start of Database part */
+app.use(express.json())
+const pg = require('pg');
+const client = new pg.Client('postgres://localhost:5432/saifdb');
+
+client.connect().then( () => {app.listen(3000,()=>{console.log("server is running on port 3000")})
+})  //to make sure not started the server untill db is connected
+
+app.post('/addMovie', (req,res) => {
+let title =req.body.title
+let release_date =req.body.release_date
+let poster_path =req.body.poster_path
+let overview=req.body.overview
+  let data =` insert into movies(title,release_date,poster_path,overview) values($1,$2,$3,$4)`
+  client.query(data,[title,release_date,poster_path,overview]).then (() => {
+    res.status(201).send("movie added to database")
+  })
+
+})
+
+app.get('/getMovies',(req,res) => {
+  let data = "select *from movies"
+  client.query(data).then((movieinfo)=>{
+    res.status(200).send(movieinfo.rows)
+  })
+})
+
+/*  end of Database part */
 
 function Mdbformatt(id,title,release_date,poster_path, overview){    //constructor to make all data same format
     this.id=id;
@@ -40,7 +68,7 @@ app.get('/search',serachHandler)              //get request using axios "/search
 async function serachHandler(req,res) {   
     let movieName = req.query.name;
     let axiosres= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.PK}&language=en-US&query=${movieName}&page=2`)
-    let mdbData=axiosres.data.results;
+    let mdbData=axiosres.data.results;  
     let x= mdbData.map(element => {
       return {
     id: element.id,
@@ -103,12 +131,6 @@ app.get('/favorite',(req,res) =>{           //favorite page route with handler
       next()
     })
 
-  app.use((err, req, res, next) => {
-    res.status(500).send({
-      code: 500,
-      message: "Server Error"
-    })
-  })
 
 
 
