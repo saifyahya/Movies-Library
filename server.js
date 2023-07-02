@@ -2,7 +2,6 @@
 
 const express = require("express");    //express become a function
 const app = express();                 //invoke the function and return value assigned to app
-
 const cors = require("cors")
 app.use(cors())                        //middleware to determine who can touch the server 
 
@@ -71,9 +70,14 @@ res.send(x)
 app.get('/search',serachHandler)              //get request using axios "/search"
 async function serachHandler(req,res) {   
     let movieName = req.query.name;
+<<<<<<< HEAD
     let axiosres= await axios.get(`${DataBase_url}/3/search/movie?api_key=${api_key}&language=en-US&query=${movieName}&page=2`)
     let mdbData=axiosres.data.results;
   
+=======
+    let axiosres= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.PK}&language=en-US&query=${movieName}&page=2`)
+    let mdbData=axiosres.data.results;  
+>>>>>>> origin/Lab13
     let x= mdbData.map(element => {
       return {
     id: element.id,
@@ -83,7 +87,6 @@ async function serachHandler(req,res) {
     overview: element.overview
       }
     })
-    console.log(mdbData)
 res.send(x)
   }
  
