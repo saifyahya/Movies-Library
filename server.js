@@ -139,7 +139,7 @@ app.get('/favorite',(req,res) =>{           //favorite page route with handler
         message: "Server Error",
         extra:err
       })
-      next()
+  
     })
 
   
