@@ -4,7 +4,7 @@
 **Author Name**: **Saif Yahya**
 
 ## WRRC
-![WRRC](./Images/wrrc.png)
+![WRRC](./Images/wrrcycle.png)
 ## Overview
 **Movies library application is used for discovering the newest movies and let the user watching his favorite movies**
 
@@ -15,9 +15,10 @@
 3. let the server listenning for requests and determine port number.
 4. using get request to build routes.
 5. using axios get request for *API* request from *MDB*. 
+6. create your postgres database and table.
 
 ## Project Features
-- It uses dependencies: express, cors, dotenv, axios.
+- It uses dependencies: express, cors, dotenv, axios and pg.
 - It consists of 6 routes:
 1. home page: it renders the movie data from *data.json* file
 2. favorite page
@@ -25,3 +26,4 @@
 4. search page: it renders the  data using *API* from *MDB*
 5. popular page: it renders the  data using *API* from *MDB*
 6. toprated page: it renders the  data using *API* from *MDB*
+- It is connected to postgres database, so you can save and retrieve data from it.
