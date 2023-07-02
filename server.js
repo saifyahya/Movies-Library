@@ -24,8 +24,9 @@ let title =req.body.title
 let release_date =req.body.release_date
 let poster_path =req.body.poster_path
 let overview=req.body.overview
-  let data =` insert into movies(title,release_date,poster_path,overview) values($1,$2,$3,$4)`
-  client.query(data,[title,release_date,poster_path,overview]).then (() => {
+let comment = req.body.comment
+  let data =` insert into movies(title,release_date,poster_path,overview,comment) values($1,$2,$3,$4,$5)`
+  client.query(data,[title,release_date,poster_path,overview,comment]).then (() => {
     res.status(201).send("movie added to database")
   })
 
@@ -48,9 +49,11 @@ function Mdbformatt(id,title,release_date,poster_path, overview){    //construct
     this.overview = overview;
 }
 
+const DataBase_url=process.env.DATABASE_URL;
+const api_key=process.env.PK;
 app.get('/trending',handleTrending)             //get request using axios "/trending"
 async function handleTrending(req,res) {                    
-    let axiosres= await axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.PK}&language=en-US`)
+    let axiosres= await axios.get(`${DataBase_url}/3/trending/all/week?api_key=${api_key}&language=en-US`)
     let mdbData=axiosres.data.results
     let x= mdbData.map(element => {
       return {
@@ -67,8 +70,14 @@ res.send(x)
 app.get('/search',serachHandler)              //get request using axios "/search"
 async function serachHandler(req,res) {   
     let movieName = req.query.name;
+<<<<<<< HEAD
+    let axiosres= await axios.get(`${DataBase_url}/3/search/movie?api_key=${api_key}&language=en-US&query=${movieName}&page=2`)
+    let mdbData=axiosres.data.results;
+  
+=======
     let axiosres= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.PK}&language=en-US&query=${movieName}&page=2`)
     let mdbData=axiosres.data.results;  
+>>>>>>> origin/Lab13
     let x= mdbData.map(element => {
       return {
     id: element.id,
@@ -83,7 +92,7 @@ res.send(x)
  
 app.get('/popular',popularHandler)            //get request using axios "/popular"
 async function popularHandler(req,res) {                    
-    let axiosres= await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.PK}&language=en-US&page=1`)
+    let axiosres= await axios.get(`${DataBase_url}/3/movie/popular?api_key=${api_key}&language=en-US&page=1`)
     let mdbData=axiosres.data.results;
    let x= mdbData.map(element => {
       return {
@@ -99,7 +108,7 @@ res.send(x)
 
 app.get('/toprated',topratedHandler)        //get request using axios "/toprated"
 async function topratedHandler(req,res) {                    
-    let axiosres= await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.PK}&language=en-US&page=1`)
+    let axiosres= await axios.get(`${DataBase_url}/3/movie/top_rated?api_key=${api_key}&language=en-US&page=1`)
     let mdbData=axiosres.data.results;
     let x= mdbData.map(element => {
       return {
@@ -128,9 +137,16 @@ app.get('/favorite',(req,res) =>{           //favorite page route with handler
         code: 404,
         message: "Page Not Found"
       })
-      next()
+      
     })
 
 
-
+    app.use((err,req, res, next) => {
+      res.status(500).send({
+        code: 500,
+        message: "Server Error",
+        extra:err
+      })
+      
+    })
 
